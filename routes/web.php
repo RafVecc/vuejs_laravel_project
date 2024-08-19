@@ -24,18 +24,30 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', [PrincipalController::class, 'principal']);
+Route::get('/', [PrincipalController::class, 'principal'])->name('site.index');
 
-Route::get('/sobreNos', [SobreNosController::class, 'sobreNos']);
+Route::get('/sobreNos', [SobreNosController::class, 'sobreNos'])->name('site.sobreNos');
 
-Route::get('/contato', [ContatoController::class, 'contato']);
+Route::get('/contato', [ContatoController::class, 'contato'])->name('site.contato');
 
-Route::get('/login', [LoginController::class, 'login']);
+Route::get('/login', [LoginController::class, 'login'])->name('site.login');
+
+Route::get('/rota1', function(){
+    echo 'Rota 1';
+})->name('site.rota1');
+
+Route::get('/rota2', function(){
+    return redirect()->route('site.rota1');
+})->name('site.rota2');
+
+Route::fallback(function(){
+    echo 'Página não existe! <a href="'.route('site.index').'">Clique aqui</a> para voltar a página inicial!';
+});
 
 Route::prefix('/app')->group(function(){
-    Route::get('/clientes', [ClientesController::class, 'clientes']);
-    Route::get('/fornecedores', [FornecedoresController::class, 'fornecedores']);
-    Route::get('/produtos', [ProdutosController::class, 'produtos']);
+    Route::get('/clientes', [ClientesController::class, 'clientes'])->name('app.clientes');
+    Route::get('/fornecedores', [FornecedoresController::class, 'fornecedores'])->name('app.fornecedores');
+    Route::get('/produtos', [ProdutosController::class, 'produtos'])->name('app.produtos');
 });
 
 
